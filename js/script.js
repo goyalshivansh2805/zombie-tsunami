@@ -42,7 +42,7 @@ const gravity = 0.5;
 let roadY = 380;  
 
 export let zombie = {
-  x: 100,
+  x: 200,
   y: roadY + 30,  
   width: 100,
   height: 100,
@@ -76,7 +76,7 @@ function drawBackground() {
 document.addEventListener('keydown', function(e) {
   if (e.code === 'Space' && !zombie.jumping) {
     zombie.jumping = true;
-    zombie.dy = -12;
+    zombie.dy = -15;
   }
 });
 
@@ -105,7 +105,9 @@ function gameLoop() {
       currentZombieImage = randomZombie1;
     }
   }
-
+  // if(zombie.x<100){
+  //   zombie.x+=3;
+  // }
   //zombie draw karne ke liye
   obstacle();
   ctx.drawImage(currentZombieImage, zombie.x, zombie.y, zombie.width, zombie.height);

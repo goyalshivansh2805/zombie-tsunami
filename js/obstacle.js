@@ -1,3 +1,4 @@
+import {detectCollision} from "./collision.js";
  const obstacles = [
     "../assets/obstacles/trafficLight/light.png",
     "../assets/obstacles/trafficLight/pole.png",
@@ -5,9 +6,8 @@
     "../assets/obstacles/carsWithoutHumans/1.1.png",
     "../assets/obstacles/carsWithoutHumans/2.1.png"
 ];
-import  {zombie} from "./script.js";
 let bgObsSpeed = 3;
-let obsroad = { obsX: 200, obsY: 200 }; 
+export let obsroad = { obsX: 200, obsY: 200 }; 
 let canvas = document.getElementById('gameCanvas');
 let ctx = canvas.getContext('2d');
 
@@ -31,6 +31,7 @@ export function obstacle() {
     } else {
         obsroad.obsY = 250;
         ctx.drawImage(images[obstacles[index]], obsroad.obsX, obsroad.obsY, 200, 200);
+            detectCollision();
         }
 
     obsroad.obsX -= bgObsSpeed; 
