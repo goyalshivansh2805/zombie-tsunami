@@ -1,7 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-
+import  {obstacle} from "./obstacle.js";
 //background ki image load krne k liye
 const backgroundImage = new Image();
 backgroundImage.src = '../assets/background/city/background.png';  
@@ -36,12 +36,12 @@ const randomZombie2 = new Image();
 randomZombie2.src = zombieSprites2[randomIndex];
 
 let bgX = 0;  
-let bgSpeed = 3; 
+let bgSpeed =3; 
 
 const gravity = 0.5;
 let roadY = 380;  
 
-let zombie = {
+export let zombie = {
   x: 100,
   y: roadY + 30,  
   width: 100,
@@ -71,7 +71,6 @@ function drawBackground() {
     bgX = 0;
   }
 }
-
 
 //space pe jump karne ke liye
 document.addEventListener('keydown', function(e) {
@@ -108,36 +107,8 @@ function gameLoop() {
   }
 
   //zombie draw karne ke liye
+  obstacle();
   ctx.drawImage(currentZombieImage, zombie.x, zombie.y, zombie.width, zombie.height);
-  obstacles();
-
   requestAnimationFrame(gameLoop);
 }
-let obsroad={
-  obsX:500,
-  obsY:260
-}
-let trafic=[`../assets/obstacles/trafficLight/light.png`,`../assets/obstacles/trafficLight/pole.png`,`../assets/obstacles/trafficLight/dustbin.png`,`../assets/obstacles/tanks/1.png`,'../assets/obstacles/tanks/2.png'];
-//roads pe obstacles add karne ke liye
-function obstacles(){
-  let randomobstacle=Math.floor(Math.random()*3)
-  let obstacle1=new Image();
-  obstacle1.src=trafic[randomobstacle];
-  if(randomobstacle==3){
-    tankloop(obstacle1);
-  }
-  while(obsroad.obsX!=0){
-    obsroad.obsX-=bgSpeed;
-    ctx.drawImage(obstacle1, obsroad.obsX, obsroad.obsY, 200,200);
-  }
- let tank={
-  x:512,
-  y:512
- }
-}
-function tankloop(obstacle){  
-  drawImage(obstacle,0,0,tank.x,tank.y,200,300);
-  setTimeout
-}
-
-gameLoop();
+gameLoop()
