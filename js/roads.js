@@ -1,4 +1,5 @@
-import {speed} from "./script.js";
+import { speed } from "./script.js";
+
 
 const roads = [];
 for (let i = 1; i <= 5; i++) {

@@ -15,9 +15,9 @@ backgroundTreesBeach2.src = '../assets/background/beach/backgroundTrees2.png';
 
 let currentBackground = backgroundCity;
 let nextBackground = backgroundCity;
-let minBgChangeDist = 9000;
-let maxBgChangeDist = 10000;
-export let distanceUntilSwitch = getRandomDistance(minBgChangeDist, maxBgChangeDist); 
+let minBgChangeTime = 120;
+let maxBgChangeTime = 150;
+export let timeUntilSwitch = getRandomTime(minBgChangeTime, maxBgChangeTime); 
 export let bgX = 0; 
 export let nextBgX = 1200;
 let cityTrees1Y = 250;
@@ -27,19 +27,13 @@ let beachTrees2Y = 300;
 let trees1Height = 200;
 let beachTrees2Height = 400;
 
-function getRandomDistance(min, max) {
+function getRandomTime(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
   
 
-function drawBackground(canvas, ctx) {
-  ctx.drawImage(currentBackground, bgX, 0, canvas.width, canvas.height);
-  ctx.drawImage(currentBackground, bgX + canvas.width, 0, canvas.width, canvas.height);
-  ctx.drawImage(nextBackground, nextBgX, 0, canvas.width, canvas.height);
-  ctx.drawImage(nextBackground, nextBgX + canvas.width, 0, canvas.width, canvas.height);
-}
-
-function drawUpperTrees(canvas,ctx) {
+  
+  function drawUpperTrees(canvas,ctx) {
   if (currentBackground === nextBackground) {
     if (currentBackground === backgroundCity) {
       ctx.drawImage(backgroundTreesCity1, bgX, cityTrees1Y, canvas.width, trees1Height); 
@@ -50,13 +44,13 @@ function drawUpperTrees(canvas,ctx) {
     }
   } else {
     if (currentBackground === backgroundCity) {
-      ctx.drawImage(backgroundTreesCity1, bgX, cityTrees1Y, canvas.width, trees1Height); 
+        ctx.drawImage(backgroundTreesCity1, bgX, cityTrees1Y, canvas.width, trees1Height); 
       ctx.drawImage(backgroundTreesBeach1, nextBgX, beachTrees1Y, canvas.width, trees1Height);
     } else {
-      ctx.drawImage(backgroundTreesBeach1, bgX, beachTrees1Y, canvas.width, trees1Height); 
-      ctx.drawImage(backgroundTreesCity1, nextBgX, cityTrees1Y, canvas.width, trees1Height);
+        ctx.drawImage(backgroundTreesBeach1, bgX, beachTrees1Y, canvas.width, trees1Height); 
+        ctx.drawImage(backgroundTreesCity1, nextBgX, cityTrees1Y, canvas.width, trees1Height);
     }
-  }
+}
 }
 
 function drawLowerTrees(canvas, ctx) {
@@ -69,22 +63,32 @@ function drawLowerTrees(canvas, ctx) {
       ctx.drawImage(backgroundTreesBeach2, nextBgX, beachTrees2Y, canvas.width, beachTrees2Height);
     }
   } else {
-    if (currentBackground === backgroundCity) {
-      ctx.drawImage(backgroundTreesCity2, bgX, cityTrees2Y, canvas.width, beachTrees2Height);
-      ctx.drawImage(backgroundTreesBeach2, nextBgX, beachTrees2Y, canvas.width, beachTrees2Height);
-    } else {
-      ctx.drawImage(backgroundTreesBeach2, bgX, beachTrees2Y, canvas.width, beachTrees2Height);
-      ctx.drawImage(backgroundTreesCity2, nextBgX, cityTrees2Y, canvas.width, beachTrees2Height);
+      if (currentBackground === backgroundCity) {
+          ctx.drawImage(backgroundTreesCity2, bgX, cityTrees2Y, canvas.width, beachTrees2Height);
+          ctx.drawImage(backgroundTreesBeach2, nextBgX, beachTrees2Y, canvas.width, beachTrees2Height);
+        } else {
+            ctx.drawImage(backgroundTreesBeach2, bgX, beachTrees2Y, canvas.width, beachTrees2Height);
+            ctx.drawImage(backgroundTreesCity2, nextBgX, cityTrees2Y, canvas.width, beachTrees2Height);
+        }
     }
-  }
 }
 
-function changeBackground() {
-  if (distanceUntilSwitch <= 0) {
-    nextBackground = (currentBackground === backgroundCity) ? backgroundBeach : backgroundCity;
-    distanceUntilSwitch = getRandomDistance(minBgChangeDist, maxBgChangeDist); 
-    nextBgX = distanceUntilSwitch;
-  }
+function drawBackground(canvas, ctx) {
+  ctx.drawImage(currentBackground, bgX, 0, canvas.width, canvas.height);
+  ctx.drawImage(currentBackground, bgX + canvas.width, 0, canvas.width, canvas.height);
+  ctx.drawImage(nextBackground, nextBgX, 0, canvas.width, canvas.height);
+  ctx.drawImage(nextBackground, nextBgX + canvas.width, 0, canvas.width, canvas.height);
+}
+
+
+function changeBackground(canvas) {
+  setTimeout(()=>{
+    currentBackground = nextBackground;
+    nextBackground = currentBackground === backgroundCity ? backgroundBeach : backgroundCity;
+    nextBgX = canvas.width+100;
+    timeUntilSwitch = getRandomTime(minBgChangeTime, maxBgChangeTime);
+    changeBackground(canvas);
+  }, timeUntilSwitch*1000);
 }
 
 export function setBgX(value) {
@@ -96,9 +100,6 @@ export function setBgX(value) {
   }
 
 
-export function setDistanceUntilSwitch(value) {
-  distanceUntilSwitch = value;
-}
 function checkBackgroundAndRoads(canvas, ctx) {
   if (bgX <= -canvas.width) {
     bgX = 0;
