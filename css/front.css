@@ -25,12 +25,24 @@ div {
     position: relative; /* Allow absolute positioning for children */
 }
 
-button {
+#play {
     font-family:'Times New Roman', Times, serif;
     width: 150px;
     position: absolute;
     height: 50px;
-    margin-top:320px;
+    left:45%;
+    top: 70%;
+    background-color: greenyellow;
+    border-radius: 5px;
+    font-size: 40px;
+}
+#contact {
+    font-family:'Times New Roman', Times, serif;
+    width: 200px;
+    position: absolute;
+    height: 90px;
+    left:30%;
+    top:67%;
     background-color: greenyellow;
     border-radius: 5px;
     font-size: 40px;
