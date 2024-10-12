@@ -64,6 +64,8 @@ const staticObstacleTypes = [
 ];
 
 
+
+
 let interval;
 export class Obstacle {
     constructor(x, y, width, height, spritePaths, speed = 0, isStatic = false) {

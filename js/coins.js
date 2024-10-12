@@ -1,64 +1,63 @@
-const CoinGame = {
-    coinCount: 0,
-    coinCountDisplay: null,
-    addCoinBtn: null,
-    canvas: null,
-    ctx: null,
-    spriteImage: null,
-    spriteWidth: 32, // Adjust according to your sprite width
-    spriteHeight: 32, // Adjust according to your sprite height
-    coins: [],
-}    
-let canvas = document.getElementById('gameCanvas');
-let ctx = canvas.getContext('2d');
- export  function coins(){
-        let coin= new Image();
-        coin.src="../assets/coin.png";
-        ctx.drawImage(coin,200+200,200,50,50);
-        ctx.drawImage(coin,250+10,200,50,50);
-        ctx.drawImage(coin,200,250+10,50,50);
-        ctx.drawImage(coin,250+10,250+10,50,50);
+import { speed } from "./script.js";
+
+let interval;
+class Coin {
+    constructor(x, y, width, height, imagePath) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
+        this.image.src = imagePath;
+        this.collected = false;
+    }
+
+    draw(ctx) {
+        if(speed===0){
+            clearInterval(interval);
         }
-        obsroad.obsX -= bgObsSpeed; 
-        if (obsroad.obsX <=-200) { 
-            obsroad.obsX = canvas.width;
-            index = Math.floor(Math.random() * 5); 
+        if (!this.collected) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        }
+    }
 
+    update() {
+        if (!this.collected) {
+            this.x -= speed; 
+        }
+    }
 
-//     init() {
-//         this.coinCountDisplay = document.getElementById('coinCount');
-//         this.addCoinBtn = document.getElementById('addCoinBtn');
-//         this.canvas = document.getElementById('gameCanvas');
-//         this.ctx = this.canvas.getContext('2d');
-//         this.spriteImage = new Image();
-//         this.spriteImage.src = 'path/to/your/spritesheet.png'; // Update the path
+    checkCollision(zombie) {
+        if (!this.collected) {
+            const zombieRight = zombie.x + zombie.width;
+            const zombieBottom = zombie.y + zombie.height;
 
-//         this.addCoinBtn.addEventListener('click', () => this.addCoin());
-//         this.spriteImage.onload = () => {
-//             this.updateDisplay(); // Initialize display after the image loads
-//         };
-//     },
+            const coinRight = this.x + this.width;
+            const coinBottom = this.y + this.height;
 
-//     addCoin() {
-//         this.coins.push({ x: Math.random() * (this.canvas.width - this.spriteWidth), y: Math.random() * (this.canvas.height - this.spriteHeight) });
-//         this.coinCount++;
-//         this.updateDisplay();
-//     },
+            if (zombie.x < coinRight &&
+                zombieRight > this.x &&
+                zombie.y < coinBottom &&
+                zombieBottom > this.y) {
+                this.collected = true;
+                return true;
+            }
+        }
+        return false;
+    }
+}
+export function spawnCoins(ctx) {
+    const coins = [];
+    let randomTime = Math.floor(Math.random() * 10) + 3; 
+    interval = setInterval(() => {
+        const coinWidth = 30;
+        const coinHeight = 30;
+        const randomX = ctx.canvas.width + Math.random() * 100; 
+        const randomY = Math.random() * 200 + 100; 
+        const newCoin = new Coin(randomX, randomY, coinWidth, coinHeight, "../assets/coin.png");
+        coins.push(newCoin);
+        randomTime = Math.floor(Math.random() * 10) + 3; 
+    }, randomTime * 1000); 
 
-//     updateDisplay() {
-//         this.coinCountDisplay.textContent = this.coinCount;
-//         this.drawCoins();
-//     },
-
-//     drawCoins() {
-//         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Clear the canvas
-//         this.coins.forEach(coin => {
-//             this.ctx.drawImage(this.spriteImage, 0, 0, this.spriteWidth, this.spriteHeight, coin.x, coin.y, this.spriteWidth, this.spriteHeight);
-//         });
-//     }
-
-
-// // Initialize the game once the DOM is fully loaded
-// document.addEventListener('DOMContentLoaded', () => {
-//     CoinGame.init();
-// });
+    return coins;
+}
