@@ -26,8 +26,8 @@ export function obstacle() {
     if (index === 0 || index === 1) {
         index=0;
         obsroad.obsY = 200;
-        ctx.drawImage(images[obstacles[index + 1]], obsroad.obsX, obsroad.obsY, 200, 200); // Pole
-        ctx.drawImage(images[obstacles[index]], obsroad.obsX + 170, obsroad.obsY + 20, 100, 100); // Light
+        ctx.drawImage(images[obstacles[index + 1]], obsroad.obsX, obsroad.obsY, 200, 200); 
+        ctx.drawImage(images[obstacles[index]], obsroad.obsX + 170, obsroad.obsY + 20, 100, 100); 
     } else {
         obsroad.obsY = 250;
         ctx.drawImage(images[obstacles[index]], obsroad.obsX, obsroad.obsY, 200, 200);
