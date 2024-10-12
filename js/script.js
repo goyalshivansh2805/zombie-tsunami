@@ -2,7 +2,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 import  {obstacle} from "./obstacle.js";
-import {heli} from "./helicopter.js";
+import   {coins} from "./coins.js"
 //background ki image load krne k liye
 const backgroundImage = new Image();
 backgroundImage.src = '../assets/background/city/background.png';  
@@ -111,7 +111,7 @@ function gameLoop() {
   // }
   //zombie draw karne ke liye
   obstacle();
-  heli();
+  coins()
   ctx.drawImage(currentZombieImage, zombie.x, zombie.y, zombie.width, zombie.height);
   requestAnimationFrame(gameLoop);
 }
