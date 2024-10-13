@@ -5,21 +5,26 @@ import {spawnHumans} from './human.js';
 import {  spawnObstacles } from './obstacles.js';
 import { spawnCoins } from './coins.js';
 import BackgroundManager from './background.js';
+import { spawnPowerUps, updatePowerUps } from './powerUps.js';
+
+
 
 
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+export let speed = 3;
+
 const scoreImage = new Image();
 const backgroundManager = new BackgroundManager(canvas, ctx);
 scoreImage.src = "../assets/score.png";
+const powerUps = spawnPowerUps(ctx);
 let totalZombies = 0;
 let score = 0;
 let totalCoins = 0;
 const brainImage = new Image();
 brainImage.src = "../assets/brainAndCoin.png";
 
-export let speed = 3;
 export function setSpeed(value){
   speed = value;
 }
@@ -42,8 +47,13 @@ function init() {
 
 
 
-function addZombie() {
-    let x = Math.floor(Math.random() * (200 - 50) + 50);
+export function addZombie(zombie) {
+    let x;
+    if(!zombie){
+      x=Math.floor(Math.random() * 150) + 50;
+    }else{
+      x = zombie.x + Math.random() *20 - 10;
+    }
     let randomZombie = Math.floor(Math.random() * 9) +1;
     zombies.push(new Zombie(x,380,100,100,`../assets/zombies/sprite1/${randomZombie}.png`,`../assets/zombies/sprite2/${randomZombie}.png`));
     totalZombies++;
@@ -62,13 +72,25 @@ function isZombieEatingHuman(zombie, human) {
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Background.drawBackground(canvas,ctx);
-    // Background.drawCloud(canvas,ctx);
-    // Background.drawUpperTrees(canvas,ctx);
     backgroundManager.updateBackground(speed);
     backgroundManager.drawBackground();
     backgroundManager.drawUpperTrees();
     Roads.drawRoads(canvas,ctx);
+    zombies.sort((a, b) => a.y - b.y);
+    zombies.forEach((zombie,index) => {
+        zombie.update(obstacles);
+        zombie.draw(ctx);
+        if(zombie.checkIsFalling(obstacles)){
+          zombie.fall();
+          if(zombie.y > canvas.height){
+            zombies.splice(index,1);
+          }
+        };
+        if(zombie.x < -zombie.width){
+          zombies.splice(index,1);
+        }
+        
+    });
     backgroundManager.drawLowerTrees();
     backgroundManager.drawCloud();
     drawOverlay();
@@ -77,14 +99,15 @@ function gameLoop() {
         human.update();
         human.draw(ctx);
         zombies.forEach((zombie) => {
-          if (isZombieEatingHuman(zombie, human)) {
+          if (isZombieEatingHuman(zombie, human) && !human.isEaten) {
+            human.isEaten = true;
             zombie.startEating(); 
+            humans.splice(index, 1); 
             score += Math.floor(Math.random() * 50) + 50;
             setTimeout(()=>{
               zombie.stopEating(); 
             }, 1000);
-            addZombie(); 
-            humans.splice(index, 1); 
+            addZombie(zombie); 
         } 
         });
     });
@@ -106,25 +129,18 @@ function gameLoop() {
       }
   }
 
-    zombies.sort((a, b) => a.y - b.y);
-    zombies.forEach((zombie,index) => {
-        zombie.update(obstacles);
-        zombie.draw(ctx);
-        if(zombie.checkIsFalling(obstacles)){
-          zombie.fall();
-          if(zombie.y > canvas.height){
-            zombies.splice(index,1);
-          }
-        };
-        if(zombie.x < -zombie.width){
-          zombies.splice(index,1);
-        }
-        
-    });
-    console.log(obstacles)
+    // console.log(obstacles)
     for (let i = 0; i < obstacles.length; i++) {
       const obstacle = obstacles[i];
       obstacle.update();
+      zombies.forEach((zombie) => {
+        if (obstacle.checkCollision(zombie)) {
+            if (obstacle.isStatic && obstacle.checkDestruction() && !obstacle.isDestroyed) {
+                obstacle.isDestroyed  = true;
+                obstacle.destroy(obstacles, zombies);
+            }
+        }
+      });
       obstacle.draw(ctx);
       if (obstacle.x + obstacle.width < 0) {
         obstacles.splice(i, 1);
@@ -138,10 +154,7 @@ function gameLoop() {
           speed = 0;
         }
     }
-    // Background.setBgX(Background.bgX  -speed);
-    // Background.setNextBgX(Background.nextBgX- speed);
-    // Background.drawLowerTrees(canvas,ctx);
-    // Background.checkBackgroundAndRoads(canvas,ctx);
+    updatePowerUps(ctx, powerUps, zombies);
     requestAnimationFrame(gameLoop);
 }
 

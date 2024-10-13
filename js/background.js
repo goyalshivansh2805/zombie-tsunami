@@ -1,3 +1,6 @@
+import {speed} from './script.js';
+
+let interval;
 class BackgroundManager {
   constructor(canvas, ctx) {
       this.canvas = canvas;
@@ -99,7 +102,10 @@ class BackgroundManager {
   }
 
   changeBackground() {
-      setTimeout(() => {
+    if(speed === 0){
+        clearInterval(interval);
+    }
+      interval = setTimeout(() => {
           
           this.nextBackground = this.currentBackground === this.backgroundCity ? this.backgroundBeach : this.backgroundCity;
           this.nextBgX = this.canvas.width;

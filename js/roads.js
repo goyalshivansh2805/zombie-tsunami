@@ -9,7 +9,7 @@ for (let i = 1; i <= 5; i++) {
 }
   
 let roadSegments=[];
-const gapWidth = 150;
+let gapWidth = Math.floor(Math.random() * 30) + 100;
 let numRoads = 5;
 export let roadY = 380;
 
@@ -39,6 +39,7 @@ function drawRoads(canvas,ctx) {
     road.x -= speed;
 
     if (road.x + road.width <= 0) {  
+      gapWidth = Math.floor(Math.random() * 30) + 100;
       let newRoad = getRandomRoad();  
       road.x = roadSegments[(i + roadSegments.length - 1) % roadSegments.length].x + 
                 roadSegments[(i + roadSegments.length - 1) % roadSegments.length].width + gapWidth;  

@@ -1,3 +1,4 @@
+import { roadY } from "./roads.js";
 import { speed } from "./script.js";
 
 let interval;
@@ -50,14 +51,14 @@ export function spawnCoins(ctx) {
     const coins = [];
     let randomTime = Math.floor(Math.random() * 10) + 3; 
     interval = setInterval(() => {
-        const coinWidth = 30;
-        const coinHeight = 30;
+        const coinWidth = 50;
+        const coinHeight = 50;
         const randomX = ctx.canvas.width + Math.random() * 100; 
-        const randomY = Math.random() * 200 + 100; 
+        const randomY = roadY-70;
         const newCoin = new Coin(randomX, randomY, coinWidth, coinHeight, "../assets/coin.png");
         coins.push(newCoin);
         randomTime = Math.floor(Math.random() * 10) + 3; 
-    }, randomTime * 1000); 
+    }, randomTime * 927); 
 
     return coins;
 }
