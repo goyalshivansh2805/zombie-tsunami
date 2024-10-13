@@ -22,6 +22,7 @@ class Human {
         this.currentImage = this.images[0];
         this.frameCount = 10;
         this.currentFrame = 0;
+        this.isEaten = false;
     }
 
     draw(ctx) {
