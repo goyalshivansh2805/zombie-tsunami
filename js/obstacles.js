@@ -230,10 +230,10 @@ export function spawnObstacles(ctx) {
     const obstacles =[];
     interval = setInterval(()=>{
         const isMoving = Math.random() > 0.5; 
-    const obstacleType = isMoving 
-        ? movingObstacleTypes[Math.floor(Math.random() * movingObstacleTypes.length)] 
-        : staticObstacleTypes[Math.floor(Math.random() * staticObstacleTypes.length)];
-    // const obstacleType = staticObstacleTypes[2];
+    // const obstacleType = isMoving 
+    //     ? movingObstacleTypes[Math.floor(Math.random() * movingObstacleTypes.length)] 
+    //     : staticObstacleTypes[Math.floor(Math.random() * staticObstacleTypes.length)];
+    const obstacleType = staticObstacleTypes[2];
     // const obstacleType = movingObstacleTypes[2];
     const obstacle = new Obstacle(
         ctx.canvas.width, 
