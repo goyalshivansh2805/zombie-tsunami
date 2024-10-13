@@ -82,7 +82,7 @@ function drawBackground(canvas, ctx) {
 
 
 function changeBackground(canvas) {
-  setTimeout(()=>{
+  setTimeout(()=>{  //changing background between city and beach and calling change background after cetain time 
     currentBackground = nextBackground;
     nextBackground = currentBackground === backgroundCity ? backgroundBeach : backgroundCity;
     nextBgX = canvas.width+100;

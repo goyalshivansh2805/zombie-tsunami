@@ -6,12 +6,12 @@ import {  spawnObstacles } from './obstacles.js';
 
 
 
-
+//to add score image
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreImage = new Image();
 scoreImage.src = "../assets/score.png";
-
+//setting speed
 export let speed = 3;
 export function setSpeed(value){
   speed = value;
@@ -19,12 +19,12 @@ export function setSpeed(value){
 
 
 
-const humans = spawnHumans(ctx);
+const humans = spawnHumans(ctx); //generation of random humans in game
 let zombies = [];
-const obstacles = spawnObstacles(ctx);
-let stopFrames=100;
+const obstacles = spawnObstacles(ctx); //generation of random obstacles in game
+let stopFrames=100; //?
 
-function init() {
+function init() { //initializing all elements of a frame
     Roads.initializeRoads(canvas,ctx);
     addZombie();
     addZombie();
@@ -33,12 +33,13 @@ function init() {
 }
 
 function addZombie() {
-    let x = Math.floor(Math.random() * (200 - 50) + 50);
-    let randomZombie = Math.floor(Math.random() * 9) +1;
+    let x = Math.floor(Math.random() * (200 - 50) + 50); //to give zombie a random position between 50 and 200
+    let randomZombie = Math.floor(Math.random() * 9) +1; // to pick image of random zombie from sprites
     zombies.push(new Zombie(x,380,100,100,`../assets/zombies/sprite1/${randomZombie}.png`,`../assets/zombies/sprite2/${randomZombie}.png`));
+    //adding 2 spirites of same zombie to array 
 }
 
-function isZombieEatingHuman(zombie, human) {
+function isZombieEatingHuman(zombie, human) { //collision detection between human and zombie 
   return (
       zombie.x < human.x + human.width &&
       zombie.x + zombie.width > human.x &&
@@ -58,7 +59,7 @@ function gameLoop() {
     ctx.drawImage(scoreImage, canvas.width/2 -100, 10, 200, 100);
 
     humans.forEach((human, index) => {
-        human.update();
+        human.update(); //changing speed
         human.draw(ctx);
         zombies.forEach((zombie) => {
           if (isZombieEatingHuman(zombie, human)) {

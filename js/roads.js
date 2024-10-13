@@ -1,22 +1,22 @@
 import { speed } from "./script.js";
 
-
+//loading images of roads in a array
 const roads = [];
 for (let i = 1; i <= 5; i++) {
     const road = new Image();
     road.src = `../assets/roads/${i}.png`;  
     roads.push(road);
 }
-  
+  // roadsegments
 let roadSegments=[];
-const gapWidth = 150;
-let numRoads = 5;
-export let roadY = 380;
+const gapWidth = 150; //to create gaps for falling zombie
+let numRoads = 5; //no of images available
+export let roadY = 380; //height of road
 
 function getRandomRoad() {
   return roads[Math.floor(Math.random() * roads.length)];
 }
-
+//initializing segments of random roads 
 function initializeRoads(canvas,ctx) {
     let x = 0;
     for (let i = 0; i < numRoads; i++) {
@@ -24,10 +24,10 @@ function initializeRoads(canvas,ctx) {
       roadSegments.push({
         x: x,
         image: randomRoad,
-        width: randomRoad.naturalWidth || canvas.width,
+        width: randomRoad.naturalWidth || canvas.width, 
         hasGap: true
       });
-      x += roadSegments[i].width + gapWidth;  
+      x += roadSegments[i].width + gapWidth;  //next road image appearing after certain gap
     }
   }
   
