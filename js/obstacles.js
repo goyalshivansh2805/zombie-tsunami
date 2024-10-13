@@ -117,8 +117,8 @@ export class Obstacle {
             this.frameCount = 10;
         }
         if(this.requiredZombiesToDestroy !== Infinity && this.requiredZombiesToDestroy !== 0){
-
-            ctx.drawImage(this.zombieCountImages[this.collidingZombies.size], this.x -70, this.y - 70, 150, 150);
+            const zombieCount = this.collidingZombies.size > this.zombieCountImages.length - 1 ? this.zombieCountImages.length - 1 : this.collidingZombies.size;
+            ctx.drawImage(this.zombieCountImages[zombieCount], this.x -70, this.y - 70, 150, 150);
         }
         ctx.drawImage(this.sprites[this.currentSpriteIndex], this.x, this.y, this.width, this.height);
     }
@@ -230,10 +230,10 @@ export function spawnObstacles(ctx) {
     const obstacles =[];
     interval = setInterval(()=>{
         const isMoving = Math.random() > 0.5; 
-    // const obstacleType = isMoving 
-    //     ? movingObstacleTypes[Math.floor(Math.random() * movingObstacleTypes.length)] 
-    //     : staticObstacleTypes[Math.floor(Math.random() * staticObstacleTypes.length)];
-    const obstacleType = staticObstacleTypes[2];
+    const obstacleType = isMoving 
+        ? movingObstacleTypes[Math.floor(Math.random() * movingObstacleTypes.length)] 
+        : staticObstacleTypes[Math.floor(Math.random() * staticObstacleTypes.length)];
+    // const obstacleType = staticObstacleTypes[2];
     // const obstacleType = movingObstacleTypes[2];
     const obstacle = new Obstacle(
         ctx.canvas.width, 
@@ -251,7 +251,7 @@ export function spawnObstacles(ctx) {
     if (obstacleType.yPosition===100 || obstacle.isOnRoad()) {
         obstacles.push(obstacle);
     }
-    },9321)
+    },11321)
     
     return obstacles;
 }

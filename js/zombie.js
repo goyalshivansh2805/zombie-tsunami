@@ -61,7 +61,11 @@ class Zombie {
     jump() {
         if (!this.jumping) {
         this.jumping = true;
-        this.dy = -this.jumpHeight; 
+        if(this.jumpHeight<=25){
+            this.dy = -this.jumpHeight; 
+        }else{
+            this.dy = -25;
+        }
         }
     }
 
@@ -78,10 +82,15 @@ class Zombie {
     update(obstacles) {
         this.y += this.dy;
         this.x +=this.dx;
-        console.log(this.speed)
-        if(this.x < 300){
+        // console.log(this.speed)
+        if(this.x <= 300){
             this.x +=  this.speed;
         }
+        // console.log(this.speed)
+        if (this.speed === 0 && this.x > 200) {
+            this.x -=  speed; 
+        }
+    
     
         let onTopOfObstacle = false;
     
@@ -94,7 +103,7 @@ class Zombie {
                     onTopOfObstacle = true;
     
                     if (!obstacle.isStatic) {
-                        this.x += obstacle.speed; 
+                        this.x -= obstacle.speed; 
                     }else{
                         this.x -= speed;
                     }
@@ -102,13 +111,7 @@ class Zombie {
             }
             if (!this.jumping && obstacle.checkCollision(this)) {
                 console.log("hit");
-                if(this.y + this.height < obstacle.y + obstacle.height){
-                    if(obstacle.isStatic){
-                        this.x -=  speed; 
-                    }else{
-                        this.x -= obstacle.speed; 
-                    }
-                }
+                this.x -= (obstacle.isStatic ? speed : obstacle.speed); 
                 return;
             }
         }
