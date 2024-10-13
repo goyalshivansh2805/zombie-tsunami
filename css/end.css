@@ -1,0 +1,41 @@
+body{
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    background-color: #282C34;
+    
+}
+div{
+    height:2000px;
+    width:2000px;
+    background-image: url(../assets/runover.png);
+    background-repeat: no-repeat;
+    margin-left: 30%;
+    margin-top: 10%;
+}
+#score{
+    margin-top:16%;
+    margin-left:10%
+}
+#coins{
+    width:100px;
+    height:100px;
+    margin-left:15%
+}
+#restart{
+    font-family:'Times New Roman', Times, serif;
+    text-decoration: none ;
+    width: 200px;
+    position: absolute;
+    height: 70px;
+    margin-top:3%;
+    margin-left:12%;
+    background-color: greenyellow;
+    border-radius: 5px;
+    font-size: 40px;
+    color:black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
