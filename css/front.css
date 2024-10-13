@@ -7,7 +7,7 @@
 body {
 
     height: 100vh;
-    width: 100vw; /* Ensure body takes full height */
+    width: 100vw; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,32 +21,39 @@ div {
     margin-top: -5%;
     background-image: url("../assets/front.png");
     background-repeat: no-repeat;
-    background-size: contain; /* Change to 'cover' if you want it to fill the div */
-    position: relative; /* Allow absolute positioning for children */
+    background-size: contain; 
+    position: relative; 
 }
 
-#play {
+a {
     font-family:'Times New Roman', Times, serif;
-    width: 150px;
-    position: absolute;
-    height: 50px;
-    left:45%;
-    top: 70%;
-    background-color: greenyellow;
-    border-radius: 5px;
-    font-size: 40px;
-}
-#contact {
-    font-family:'Times New Roman', Times, serif;
+    text-decoration: none ;
     width: 200px;
     position: absolute;
-    height: 90px;
-    left:30%;
-    top:67%;
+    height: 70px;
+    margin-top:320px;
     background-color: greenyellow;
     border-radius: 5px;
     font-size: 40px;
+    color:black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
-button:hover{
+
+#play{
+    position: absolute;
+    top: 24%;
+    left: 47%;
+    width: 150px;
+}
+
+#contact{
+    position: absolute;
+    top: 24%;
+    left: 31%;
+}
+a:hover{
     background-color:rgb(77, 195, 77);
 }
