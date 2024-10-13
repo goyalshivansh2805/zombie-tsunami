@@ -15,7 +15,7 @@ body{
     margin-top: 5%;
 }
 #score{
-    margin-top:16%;
+    margin-top:18%;
     margin-left:10%
 }
 #coins{
@@ -29,7 +29,7 @@ body{
     width: 200px;
     position: absolute;
     height: 70px;
-    margin-top:3%;
+    margin-top:5%;
     margin-left:12%;
     background-color: greenyellow;
     border-radius: 5px;
@@ -52,19 +52,19 @@ body{
 
 #totalscore{
     position: absolute;
-    top:27.5vh;
-    left:10vw;
+    top:32vh;
+    left:12vw;
 }
 
 #totalcoins{
     position: absolute;
-    top: 38vh;
+    top: 43vh;
     left: 12vw;
 }
 
 #zombies{
     position: absolute;
-    top: 17vh;
+    top: 21vh;
     font-size: 70px;
-    left: 12vw;
+    left: 14vw;
 }

@@ -44,15 +44,15 @@ a {
 
 #play{
     position: absolute;
-    top: 24%;
-    left: 47%;
+    top: 22%;
+    left: 50%;
     width: 150px;
 }
 
 #contact{
     position: absolute;
-    top: 24%;
-    left: 31%;
+    top: 22%;
+    left: 31.5%;
 }
 a:hover{
     background-color:rgb(77, 195, 77);
