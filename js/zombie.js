@@ -102,11 +102,11 @@ class Zombie {
                     this.jumping = false; 
                     onTopOfObstacle = true;
     
-                    if (!obstacle.isStatic) {
-                        this.x -= obstacle.speed; 
-                    }else{
-                        this.x -= speed;
-                    }
+                    // if (!obstacle.isStatic) {
+                    //     this.x -= obstacle.speed; 
+                    // }else{
+                    //     this.x -= speed;
+                    // }
                     this.x-=this.speed;
                 }
             }
