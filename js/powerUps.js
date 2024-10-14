@@ -91,8 +91,8 @@ export function spawnPowerUps(ctx) {
     const powerUps = [];
 
     setInterval(() => {
-        const powerUpType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
-        // const powerUpType = powerUpTypes[0];
+        // const powerUpType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+        const powerUpType = powerUpTypes[0];
         const powerUp = new PowerUp(
             ctx.canvas.width, 
             roadY - 250, 

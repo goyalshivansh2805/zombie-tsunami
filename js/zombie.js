@@ -107,6 +107,7 @@ class Zombie {
                     }else{
                         this.x -= speed;
                     }
+                    this.x-=this.speed;
                 }
             }
             if (!this.jumping && obstacle.checkCollision(this)) {

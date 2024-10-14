@@ -251,7 +251,7 @@ export function spawnObstacles(ctx) {
     if (obstacleType.yPosition===100 || obstacle.isOnRoad()) {
         obstacles.push(obstacle);
     }
-    },11321)
+    },6321)
     
     return obstacles;
 }

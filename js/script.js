@@ -161,6 +161,9 @@ function gameLoop() {
             if (obstacle.isStatic && obstacle.checkDestruction() && !obstacle.isDestroyed) {
                 obstacle.isDestroyed  = true;
                 obstacle.destroy(obstacles, zombies);
+            }else{
+              zombie.x -= speed;
+              zombie.x-=zombie.speed;
             }
         }
       });
