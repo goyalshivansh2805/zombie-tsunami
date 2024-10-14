@@ -6,6 +6,7 @@ import {  spawnObstacles } from './obstacles.js';
 import { spawnCoins } from './coins.js';
 import BackgroundManager from './background.js';
 import { spawnPowerUps, updatePowerUps } from './powerUps.js';
+import {spawnLights} from './trafficLight.js';
 
 
 
@@ -16,15 +17,26 @@ const ctx = canvas.getContext('2d');
 export let speed = 3;
 
 const scoreImage = new Image();
+const homeImage = new Image();
+homeImage.src = "../assets/home.png";
 const backgroundManager = new BackgroundManager(canvas, ctx);
 scoreImage.src = "../assets/score.png";
+const audio = new Audio('../assets/music.mp3');
+audio.loop = true;
+const audioImage = new Image();
+audioImage.src = "../assets/audiomuted.png";
 const powerUps = spawnPowerUps(ctx);
 let totalZombies = 0;
-let score = 0;
-let totalCoins = 0;
+export let score = 0;
+export let totalCoins = 0;
+const trafficLights = spawnLights(ctx);
 const brainImage = new Image();
 brainImage.src = "../assets/brainAndCoin.png";
-
+const bloodImage = new Image();
+bloodImage.src = "../assets/blood.png";
+let bloodEffectActive = false; 
+let bloodEffectStartTime = 0;
+const bloodEffectDuration = 100;
 export function setSpeed(value){
   speed = value;
 }
@@ -40,8 +52,6 @@ let stopFrames=100;
 function init() { //initializing all elements of a frame
     Roads.initializeRoads(canvas,ctx);
     addZombie();
-    addZombie();
-    // Background.changeBackground(canvas);
     gameLoop();
 }
 
@@ -52,7 +62,9 @@ export function addZombie(zombie) {
     if(!zombie){
       x=Math.floor(Math.random() * 150) + 50;
     }else{
-      x = zombie.x + Math.random() *20 - 10;
+      x = zombie.x + Math.random() *10 - 5;
+      bloodEffectActive = true;
+      bloodEffectStartTime = Date.now(); 
     }
     let randomZombie = Math.floor(Math.random() * 9) +1;
     zombies.push(new Zombie(x,380,100,100,`../assets/zombies/sprite1/${randomZombie}.png`,`../assets/zombies/sprite2/${randomZombie}.png`));
@@ -75,7 +87,14 @@ function gameLoop() {
     backgroundManager.updateBackground(speed);
     backgroundManager.drawBackground();
     backgroundManager.drawUpperTrees();
+    backgroundManager.drawCloud();
     Roads.drawRoads(canvas,ctx);
+
+    trafficLights.forEach((trafficLight) => {
+      trafficLight.update(zombies); 
+      trafficLight.draw();
+  });
+
     zombies.sort((a, b) => a.y - b.y);
     zombies.forEach((zombie,index) => {
         zombie.update(obstacles);
@@ -92,7 +111,6 @@ function gameLoop() {
         
     });
     backgroundManager.drawLowerTrees();
-    backgroundManager.drawCloud();
     drawOverlay();
 
     humans.forEach((human, index) => {
@@ -111,14 +129,13 @@ function gameLoop() {
         } 
         });
     });
-
     for (let i = coins.length - 1; i >= 0; i--) {
       coins[i].update();
       coins[i].draw(ctx);
 
       for (const zombie of zombies) {
           if (coins[i].checkCollision(zombie)) {
-              console.log("Coin collected!");
+              // console.log("Coin");
           }
       }
 
@@ -129,7 +146,13 @@ function gameLoop() {
       }
   }
 
-    // console.log(obstacles)
+    if (bloodEffectActive) {
+      ctx.drawImage(bloodImage, 0, 0, canvas.width, canvas.height);
+      
+      if (Date.now() - bloodEffectStartTime > bloodEffectDuration) {
+          bloodEffectActive = false; 
+      }
+  }
     for (let i = 0; i < obstacles.length; i++) {
       const obstacle = obstacles[i];
       obstacle.update();
@@ -138,6 +161,9 @@ function gameLoop() {
             if (obstacle.isStatic && obstacle.checkDestruction() && !obstacle.isDestroyed) {
                 obstacle.isDestroyed  = true;
                 obstacle.destroy(obstacles, zombies);
+            }else{
+              zombie.x -= speed;
+              zombie.x-=zombie.speed;
             }
         }
       });
@@ -152,6 +178,7 @@ function gameLoop() {
         stopFrames--;
         if(stopFrames === 0){
           speed = 0;
+          endGame();
         }
     }
     updatePowerUps(ctx, powerUps, zombies);
@@ -160,6 +187,7 @@ function gameLoop() {
 
 window.onload=()=>{
   init();
+  
   
 }
 
@@ -177,11 +205,21 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+const pauseImageX = canvas.width - 140;
+const pauseImageY = 10;
+const pauseImageWidth = 70;
+const pauseImageHeight = 70;
+
+const audioImageX = canvas.width - 70;
+const audioImageY = 10;
+const audioImageWidth = 70;
+const audioImageHeight = 70;
 
 function drawOverlay(){
   ctx.drawImage(brainImage, 10, 10, 100, 100);
   ctx.drawImage(scoreImage, canvas.width/2 -100, 10, 200, 100);
-   
+    ctx.drawImage(homeImage, pauseImageX, pauseImageY, pauseImageWidth, pauseImageHeight);
+    ctx.drawImage(audioImage, audioImageX, audioImageY, audioImageWidth, audioImageHeight);
     drawNoOfZombies();
     drawScore();
 }
@@ -213,4 +251,45 @@ function drawScore(){
   ctx.strokeText(score, canvas.width/2+20, 105);
   ctx.fillText(score, canvas.width/2+20, 105);
   ctx.closePath();
+}
+
+canvas.addEventListener("click", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const clickY = e.clientY - rect.top;
+
+  if (
+      clickX >= pauseImageX &&
+      clickX <= pauseImageX + pauseImageWidth &&
+      clickY >= pauseImageY &&
+      clickY <= pauseImageY + pauseImageHeight
+  ) {
+      toggleHome();
+  }
+
+  if (
+      clickX >= audioImageX &&
+      clickX <= audioImageX + audioImageWidth &&
+      clickY >= audioImageY &&
+      clickY <= audioImageY + audioImageHeight
+  ) {
+      if (audio.paused) {
+          audio.play();
+          audioImage.src = "../assets/audioplaying.png";
+      } else {
+          audio.pause();
+          audioImage.src = "../assets/audiomuted.png";
+      }
+  }
+});
+
+function toggleHome() {
+  window.location.href = "index.html";
+}
+
+function endGame() {
+  sessionStorage.setItem("totalCoins", totalCoins);
+  sessionStorage.setItem("score", score);
+  sessionStorage.setItem("zombies", totalZombies);
+  window.location.href = "gameover.html";
 }

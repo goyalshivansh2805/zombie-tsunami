@@ -27,7 +27,9 @@ const powerUpTypes = [
         boostDuration: 5000, 
         effect: (zombies) => {
             zombies.forEach(zombie => {
+                console.log(zombie.jumpHeight);
                 zombie.jumpHeight += 5; 
+                console.log(zombie.jumpHeight);
             });
         },
         resetEffect: (zombies) => {
@@ -90,7 +92,7 @@ export function spawnPowerUps(ctx) {
 
     setInterval(() => {
         const powerUpType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
-        
+        // const powerUpType = powerUpTypes[0];
         const powerUp = new PowerUp(
             ctx.canvas.width, 
             roadY - 250, 
@@ -102,7 +104,7 @@ export function spawnPowerUps(ctx) {
             powerUpType.boostDuration
         );
         powerUps.push(powerUp);
-    }, 12592); 
+    }, 11292); 
 
     return powerUps;
 }

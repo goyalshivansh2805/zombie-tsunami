@@ -14,7 +14,7 @@ body {
     background-color: #282C34;
 }
 
-div {
+.bg {
     height: 580px;
     width: 1200px;
     margin-left: 24%;
@@ -44,16 +44,32 @@ a {
 
 #play{
     position: absolute;
-    top: 24%;
-    left: 47%;
+    top: 22%;
+    left: 50%;
     width: 150px;
 }
 
 #contact{
     position: absolute;
-    top: 24%;
-    left: 31%;
+    top: 22%;
+    left: 31.5%;
 }
 a:hover{
     background-color:rgb(77, 195, 77);
+}
+.controls-info {
+    position: absolute;
+    top: 470px;
+    left: 790px;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    text-align: left; 
+    z-index: 1;
+    font-size: 25px;
+}
+
+.controls-info ul {
+    list-style-type: none;
 }
