@@ -60,7 +60,7 @@ export function spawnHumans(ctx) {
         ["../assets/humans/sprites1/2.png", "../assets/humans/sprites2/2.png"],
         ["../assets/humans/sprites1/3.png", "../assets/humans/sprites2/3.png"],
     ];
-    let randomTime = Math.floor(Math.random() * 10) +5 ;
+    let randomTime = Math.floor(Math.random() * 10) +5 ; //randomtime
     interval = setInterval(() => {
         const x = ctx.canvas.width + Math.random() * 100;
         let randomIndex = Math.floor(Math.random() * humanTypes.length);

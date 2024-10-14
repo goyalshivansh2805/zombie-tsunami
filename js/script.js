@@ -43,13 +43,13 @@ export function setSpeed(value){
 
 
 
-const humans = spawnHumans(ctx);
+const humans = spawnHumans(ctx); //generation of random humans in game
 let zombies = [];
 let coins = spawnCoins(ctx);
 const obstacles = spawnObstacles(ctx);
 let stopFrames=100;
 
-function init() {
+function init() { //initializing all elements of a frame
     Roads.initializeRoads(canvas,ctx);
     addZombie();
     // addZombie();
@@ -72,7 +72,7 @@ export function addZombie(zombie) {
     totalZombies++;
 }
 
-function isZombieEatingHuman(zombie, human) {
+function isZombieEatingHuman(zombie, human) { //collision detection between human and zombie 
   return (
       zombie.x < human.x + human.width &&
       zombie.x + zombie.width > human.x &&

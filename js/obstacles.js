@@ -236,7 +236,7 @@ export function spawnObstacles(ctx) {
     // const obstacleType = staticObstacleTypes[2];
     // const obstacleType = movingObstacleTypes[2];
     const obstacle = new Obstacle(
-        ctx.canvas.width, 
+        ctx.canvas.width,  //ctx?
         obstacleType.yPosition, 
         obstacleType.width, 
         obstacleType.height,
