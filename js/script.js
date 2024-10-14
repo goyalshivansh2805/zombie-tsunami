@@ -52,7 +52,7 @@ let stopFrames=100;
 function init() {
     Roads.initializeRoads(canvas,ctx);
     addZombie();
-    addZombie();
+    // addZombie();
     gameLoop();
 }
 
