@@ -88,7 +88,7 @@ class Zombie {
         }
         // console.log(this.speed)
         if (this.speed === 0 && this.x > 200) {
-            this.x -=  speed; 
+            this.x -=  0.75*speed; 
         }
     
     

@@ -52,6 +52,7 @@ let stopFrames=100;
 function init() {
     Roads.initializeRoads(canvas,ctx);
     addZombie();
+    addZombie();
     gameLoop();
 }
 
@@ -190,18 +191,26 @@ window.onload=()=>{
   
   
 }
-
 window.addEventListener("keydown", (e) => {
   if (e.key === " ") {
-      let jumpDelay = 0; 
+    zombies.sort((a, b) => b.x - a.x);
+    let leadZombieX = zombies[0].x;
+    zombies[0].jump();
+    zombies.slice(1).forEach((zombie, index) => {
+      const distance = leadZombieX - zombie.x; 
+      // console.log(distance)
+      const effectiveSpeed = speed + (zombie.speed);
 
-      zombies.sort((a, b) => b.x - a.x);
-      zombies.forEach((zombie, index) => {
-          setTimeout(() => {
-              zombie.jump();
-              jumpDelay += 100;
-          }, index*100 + jumpDelay); 
-      });
+      if (effectiveSpeed > 0) {
+        const timeToCatchUp = distance / effectiveSpeed;
+        // console.log(timeToCatchUp) 
+        const jumpDelay = timeToCatchUp*15; 
+
+        setTimeout(() => {
+          zombie.jump();
+        }, jumpDelay);
+      } 
+    });
   }
 });
 

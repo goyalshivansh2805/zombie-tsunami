@@ -15,7 +15,9 @@ const powerUpTypes = [
         },
         resetEffect: (zombies) => {
             zombies.forEach(zombie => {
-                zombie.speed -= 2; 
+                if(zombie.speed!=0){
+                    zombie.speed -= 2; 
+                }
             });
         }
     },
@@ -34,7 +36,10 @@ const powerUpTypes = [
         },
         resetEffect: (zombies) => {
             zombies.forEach(zombie => {
-                zombie.jumpHeight -= 5;
+                if(zombie.jumpHeight >20){
+                    zombie.jumpHeight -= 5;
+                }
+
             });
         }
     },
